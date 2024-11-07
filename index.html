@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Home Control</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body and Container Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    /* Appliance Card Styles */
+    .appliance-card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .appliance-card:hover {
+      transform: translateY(-10px);
+    }
+
+    /* Appliance Header Styles */
+    .appliance-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .appliance-header img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+    .appliance-header h3 {
+      margin-left: 10px;
+      font-size: 18px;
+    }
+
+    /* Toggle Button Styles */
+    .toggle {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .toggle:active {
+      background-color: #45a049;
+    }
+
+    /* Controls Section Styles */
+    .controls {
+      width: 100%;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .controls label {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    input[type="range"],
+    input[type="number"],
+    input[type="color"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 600px) {
+      .appliance-card {
+        padding: 15px;
+      }
+
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Large Image Styles */
+    .large-image {
+      display: none;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Fan Appliance -->
+    <div class="appliance-card" id="fan">
+      <div class="appliance-header">
+        <img src="fan.jpg" alt="Fan">
+        <h3>Fan</h3>
+        <button class="toggle" onclick="toggleAppliance('fan')">ON</button>
+      </div>
+      <div class="controls" id="fan-controls">
+        <label for="fan-speed">Speed:</label>
+        <input type="range" min="1" max="3" id="fan-speed">
+      </div>
+      <!-- Large Image for Fan -->
+      <img src="fan.jpg" class="large-image" id="fan-large" alt="Large Fan Image">
+    </div>
+
+    <!-- Air Conditioner Appliance -->
+    <div class="appliance-card" id="ac">
+      <div class="appliance-header">
+        <img src="air.webp" alt="Air Conditioner">
+        <h3>AC</h3>
+        <button class="toggle" onclick="toggleAppliance('ac')">ON</button>
+      </div>
+      <div class="controls" id="ac-controls">
+        <label for="ac-temp">Temperature:</label>
+        <input type="number" min="16" max="30" value="22" id="ac-temp">
+      </div>
+      <!-- Large Image for AC -->
+      <img src="air.webp" class="large-image" id="ac-large" alt="Large AC Image">
+    </div>
+
+    <!-- Light Appliance -->
+    <div class="appliance-card" id="light">
+      <div class="appliance-header">
+        <img src="light.jpeg" alt="Light">
+        <h3>Light</h3>
+        <button class="toggle" onclick="toggleAppliance('light')">ON</button>
+      </div>
+      <div class="controls" id="light-controls">
+        <label for="light-brightness">Brightness:</label>
+        <input type="range" min="1" max="100" value="50" id="light-brightness">
+        <label for="light-color">Color:</label>
+        <input type="color" id="light-color">
+      </div>
+      <!-- Large Image for Light -->
+      <img src="light.jpeg" class="large-image" id="light-large" alt="Large Light Image">
+    </div>
+
+    <!-- TV Appliance -->
+    <div class="appliance-card" id="tv">
+      <div class="appliance-header">
+        <img src="tv.jpeg" alt="TV">
+        <h3>TV</h3>
+        <button class="toggle" onclick="toggleAppliance('tv')">ON</button>
+      </div>
+      <!-- Large Image for TV -->
+      <img src="tv.jpeg" class="large-image" id="tv-large" alt="Large TV Image">
+    </div>
+  </div>
+
+  <script>
+    function toggleAppliance(appliance) {
+      const button = document.querySelector(`#${appliance} .toggle`);
+      const controls = document.querySelector(`#${appliance}-controls`);
+      const largeImage = document.querySelector(`#${appliance}-large`);
+
+      // Toggle ON/OFF button text and style
+      if (button.textContent === 'ON') {
+        button.textContent = 'OFF';
+        button.style.backgroundColor = '#f44336'; // Red for OFF
+        controls.style.display = 'block';  // Show controls when ON
+        largeImage.style.display = 'block';  // Show large image
+      } else {
+        button.textContent = 'ON';
+        button.style.backgroundColor = '#4caf50'; // Green for ON
+        controls.style.display = 'none';  // Hide controls when OFF
+        largeImage.style.display = 'none';  // Hide large image
+      }
+    }
+  </script>
+</body>
+</html>
